@@ -1,4 +1,8 @@
 # livevolpy
+To install run the following pip command.
+````
+pip3 install git+https://github.com/numberjuani/livevolpy.git
+````
 This is a simple wrapper for the CBOE livevol api that handles authentication and renewal of tokens for the user. 
 ````
   from livevolpy.client import LiveVolClient, create_json_file
