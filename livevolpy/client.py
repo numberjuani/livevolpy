@@ -157,6 +157,21 @@ class LiveVolClient:
             print(f'Error: Could not get underlying limit up/down for {params["symbol"]}')
             print(f'Underlying Limit Up/Down Request Headers for {params["symbol"]}: {request.headers}')
             return None
+        
+    def get_option_trades_with_greeks(self,params):
+        """This function obtains time and sales data with option greeks"""
+        self._check_token_is_valid()
+        request = requests.get(self._BASE_URL+'live/allaccess/time-and-sales/option-trades-with-greeks', headers={'Authorization': f'Bearer {self.access_token}'},params=params)
+        print(params,' status= ',request.status_code)
+        try:
+            if request.status_code == 200:
+                print(f'Monthly points used: {request.headers["x-monthly-points-used"]}')
+                ret_value = request.json()
+                return ret_value
+        except Exception:
+            print(f'Error: Could not get option trades with greeks for {params["symbol"]}')
+            print(f'option trades with greeks Request Headers for {params["symbol"]}: {request.headers}')
+            return None
 
 
 def create_json_file(filepath:str,data:Dict):
