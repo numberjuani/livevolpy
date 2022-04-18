@@ -3,6 +3,7 @@ from typing import Dict
 import json
 import time
 import requests
+
 class LiveVolClient:
     _BASE_URL: str = 'https://api.livevol.com/v1/'
     _LIVE_ENDPOINT:str =   "https://api.livevol.com/v1/"
@@ -72,6 +73,21 @@ class LiveVolClient:
             print(f'Error: Could not get options and underlying quotes for {params["symbol"]}')
             print(f'Options and Underlying Quotes Request Headers for {params["symbol"]}: {request.headers}')
             return None
+    
+    def get_underlying_quotes(self,params:Dict[str, str]):
+        """This function obtains underlying quotes"""
+        self._check_token_is_valid()
+        request = requests.get(self._BASE_URL+'live/allaccess/market/underlying-quotes', headers={'Authorization': f'Bearer {self.access_token}'},params=params)
+        try:
+            if request.status_code == 200:
+                print(f'Monthly points used: {request.headers["x-monthly-points-used"]}')
+                ret_value = request.json()
+                return ret_value
+        except Exception:
+            print(f'Error: Could not get underlying quotes for {params["symbol"]}')
+            print(f'Underlying Quotes Request Headers for {params["symbol"]}: {request.headers}')
+            return None
+    
     def get_trades(self,params:Dict[str, str]):
         """This function obtains trade data"""
         self._check_token_is_valid()
@@ -85,6 +101,7 @@ class LiveVolClient:
             print(f'Error: Could not get trades for {params["symbol"]}')
             print(f'Trades Request Headers for {params["symbol"]}: {request.headers}')
             return None
+    
     def get_option_trades_breakdown(self,params:Dict[str, str]):
         """This options retrives the options trades breakdown"""
         self._check_token_is_valid()
@@ -98,6 +115,49 @@ class LiveVolClient:
             print(f'Error: Could not get trades for {params["symbol"]}')
             print(f'Trades Request Headers for {params["symbol"]}: {request.headers}')
             return None
+    
+    def get_flex_trades(self,params):
+        """This function obtains flex trades"""
+        self._check_token_is_valid()
+        request = requests.get(self._BASE_URL+'live/allaccess/market/flex-trades', headers={'Authorization': f'Bearer {self.access_token}'},params=params)
+        try:
+            if request.status_code == 200:
+                print(f'Monthly points used: {request.headers["x-monthly-points-used"]}')
+                ret_value = request.json()
+                return ret_value
+        except Exception:
+            print(f'Error: Could not get flex trades for {params["symbol"]}')
+            print(f'Flex Trades Request Headers for {params["symbol"]}: {request.headers}')
+            return None
+    
+    def get_halts(self,params):
+        """This function obtains halts"""
+        self._check_token_is_valid()
+        request = requests.get(self._BASE_URL+'live/allaccess/market/halts', headers={'Authorization': f'Bearer {self.access_token}'},params=params)
+        try:
+            if request.status_code == 200:
+                print(f'Monthly points used: {request.headers["x-monthly-points-used"]}')
+                ret_value = request.json()
+                return ret_value
+        except Exception:
+            print(f'Error: Could not get halts for {params["symbol"]}')
+            print(f'Halts Request Headers for {params["symbol"]}: {request.headers}')
+            return None
+    
+    def get_underlying_limit_updn(self,params):
+        """This function obtains underlying limit up/down"""
+        self._check_token_is_valid()
+        request = requests.get(self._BASE_URL+'live/allaccess/market/underlying-limit-up-limit-down', headers={'Authorization': f'Bearer {self.access_token}'},params=params)
+        try:
+            if request.status_code == 200:
+                print(f'Monthly points used: {request.headers["x-monthly-points-used"]}')
+                ret_value = request.json()
+                return ret_value
+        except Exception:
+            print(f'Error: Could not get underlying limit up/down for {params["symbol"]}')
+            print(f'Underlying Limit Up/Down Request Headers for {params["symbol"]}: {request.headers}')
+            return None
+
 
 def create_json_file(filepath:str,data:Dict):
     """This function creates a json file"""
